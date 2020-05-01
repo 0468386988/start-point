@@ -55,10 +55,11 @@ namespace BlazingPizza.Server
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseResponseCompression();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseWebAssemblyDebugging();
+                app.UseBlazorDebugging();
             }
 
             app.UseStaticFiles();
@@ -67,12 +68,12 @@ namespace BlazingPizza.Server
 
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseBlazorFrameworkFiles();
+            app.UseClientSideBlazorFiles<Client.Program>();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapFallbackToFile("index.html");
+                endpoints.MapFallbackToClientSideBlazor<Client.Program>("index.html");
             });
         }
     }
